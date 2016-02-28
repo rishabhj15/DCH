@@ -1,0 +1,1 @@
+jdbc:mysql://localhost/ibra19_dch?user=ibra19_permisml&password=permisml123
