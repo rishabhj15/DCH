@@ -91,14 +91,21 @@ th,td{
                             Statement st1=cn.createStatement();
                             Statement st2=cn.createStatement();
                             Statement st3=cn.createStatement();
-
+                            Statement st4=cn.createStatement();
+                            
                             ResultSet rs = st.executeQuery("Select * from dispatch where tid="+id);
                             ResultSet rs1 = st1.executeQuery("Select * from transact where id="+id);
                             rs1.next();
                             ResultSet rs2 = st2.executeQuery("Select * from party where id="+rs1.getString("party"));
                             ResultSet rs3 = st3.executeQuery("Select * from transact where party="+rs1.getString("party")+" order by id");
-                            
+                            ResultSet rs4 = st4.executeQuery("Select * from party_hindi where pid="+rs1.getString("party"));
                             rs2.next();
+                            
+                            String name_hindi ="",address_hindi = "";
+                            if(rs4.next()){
+                            	name_hindi = rs4.getString("name_hindi");
+                            	address_hindi = rs4.getString("address_hindi");
+                            }
                             %>
                             <title>
                                 Receipt No: <%=id%>
@@ -115,8 +122,13 @@ th,td{
             preRec=" | Receipt No: "+rs3.getString(1);
          }
         
-                            out.print("<table id=main align='center'><tr><td id=topl valign=top><div id=h3>Diwakar Copy House</div>"
-                            + "<div id=h3>To:<i><span id='tem'> "+rs2.getString("name")+" "+rs2.getString("addr")+"</span></i><br>Tin No: <i><span id='tem'> "+rs2.getString("tin")+"</span></i><br>Phone: <i><span id='tem'> "+rs2.getString("pno")+"</span></i><br>Transport: ");
+                            out.print("<table id=main align='center'><tr><td id=topl valign=top>"
+                            + "<div id=h3>To:<b><span id='tem' style='color:black; font-size: large;'> "+rs2.getString("name")+", "+rs2.getString("addr")+"</span>"
+                            + "</b><br>");
+                            if(!name_hindi.equalsIgnoreCase("")||!address_hindi.equalsIgnoreCase("")){
+                            	out.print("To:<b><span id='tem' style='color:black; font-size: large;'> "+name_hindi+", "+address_hindi+"</span></b><br>");
+                            }
+                            out.print("Tin No: <i><span id='tem'> "+rs2.getString("tin")+"</span></i><br>Phone: <i><span id='tem'> "+rs2.getString("pno")+"</span></i><br>Transport: ");
                             if(rs1.getInt(5)!=0){
                             out.print("<i>("+rs1.getInt(5)+")</i>");
                             }

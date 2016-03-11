@@ -12,7 +12,8 @@
 <%@page import="session.User"%>
 <%@page import="java.sql.*"%>
 <%@page import="mybean.Conf"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 <%
@@ -1740,15 +1741,29 @@ String fd= "all";
                                     </td>
                                 </tr><tr>
                                     <td align="left" width="50%" valign="top" >
-                                        <%rs = st.executeQuery("Select * from party where sta='a' order by addr");%>
+                                        <%rs = st.executeQuery("Select * from party LEFT JOIN party_hindi on id=pid where sta='a' order by addr,id");%>
                                         <table id="viewtab" >
-                                            <tr id="asform" ><th>Sno</th><th>Name</th><th>Address</th><th>Tin</th><th>Phone</th><th>Transport</th><th colspan="2" >Action</th></tr>
+                                        	<thead>
+			                                <tr id="asform" ><th>Sno</th><th colspan="2">Name</th><th colspan="2">Address</th><th>Tin</th><th>Phone</th><th>Transport</th><th colspan="3" >Action</th></tr>
+                                             </thead>
+                                             <tbody>
                                             <%i = 0;
                                                 while (rs.next()) {
-                                                    i++;%>
+                                                    i++;
+                                                    String hindi_name ="";
+                                                    String hindi_addr = "";
+                                                    if(null!=rs.getString("name_hindi")){
+                                                    	 hindi_name = rs.getString("name_hindi");
+                                                    }
+                                                    if(null!=rs.getString("address_hindi")){
+                                                    	 hindi_addr = rs.getString("address_hindi"); 
+                                                    }
+                                                    %>
+                                                    
 
-                                            <tr <%if (i % 2 == 1) {%>id="odd"<%} else {%>id="even"<%}%> ><td><%=i%></td><td><%=rs.getString(2)%></td><td><%=rs.getString(3)%></td><td><%=rs.getString(4)%></td><td><%=rs.getString(5)%></td><td><%=rs.getString(6)%></td><td><a id="del" onclick="return ask()" href="del.jsp?tab=party&id=<%=rs.getInt("id")%>">Delete</a></td><td><a id="example5" href="editparty.jsp?tab=party&id=<%=rs.getInt("id")%>">Edit</td></tr>
+                                            <tr <%if (i % 2 == 1) {%>id="odd"<%} else {%>id="even"<%}%> ><td><%=i%></td><td><%=rs.getString(2)%></td><td><%=hindi_name%></td><td><%=rs.getString(3)%></td><td><%=hindi_addr%></td><td><%=rs.getString(4)%></td><td><%=rs.getString(5)%></td><td><%=rs.getString(6)%></td><td><a id="del" onclick="return ask()" href="del.jsp?tab=party&id=<%=rs.getInt("id")%>">Delete</a></td><td><a id="example5" href="editparty.jsp?tab=party&id=<%=rs.getInt("id")%>">Edit</td><td><a id="example5" href="editPartyHindi.jsp?tab=party&id=<%=rs.getInt("id")%>">Add Hindi</a></td></tr>
                                             <%}%>
+                                            </tbody>
                                         </table></td></tr></table>
                         </div>
                         <div id="fragment-9">

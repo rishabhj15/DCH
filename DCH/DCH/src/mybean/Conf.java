@@ -15,9 +15,10 @@ import java.io.IOException;
 
 public class Conf{
     //public String con1="jdbc:mysql://localhost/rishabhjain189?user=rishabhjain189&password=quality321";
-    public String con="jdbc:mysql://localhost/ibra19_dch1?user=ibra19_permisml&password=permisml123";
-    //public String con="jdbc:mysql://localhost/ibra19_dch1?user=root&password=root";
-    //public String con="jdbc:mysql://127.5.80.1:3306/dch?user=rishabhjain15&password=quality321";
+    public String con="jdbc:mysql://localhost/ibra19_dch1?useUnicode=true&characterEncoding=UTF-8&user=ibra19_permisml&password=permisml123";
+    //public String con="jdbc:mysql://localhost/ibra19_dch1?useUnicode=true&characterEncoding=UTF-8&user=root&password=root";
+    //public String con="jdbc:mysql://127.5.80.1:3306/dch?useUnicode=true&characterEncoding=UTF-8&user=rishabhjain15&password=quality321";
+	
 
     public String getURL() throws IOException{
 return con;

@@ -48,7 +48,7 @@
                 <%                    }
                             cn.close();
                         } catch (Exception ex) {
-                            
+                            ex.printStackTrace();
                             out.println("<h1>Please Start MySql Server or Load Required Driver.</h1>");
                             out.println(ex);
                         }

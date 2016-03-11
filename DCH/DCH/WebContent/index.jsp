@@ -2,7 +2,7 @@
 
 <html>
 	<head>
-		<title>Diwakar Copy House v1.4</title>
+		<title>Diwakar Copy House v1.4.1</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
 		<link rel="stylesheet" href="styles.css" />
                 <script type="text/javascript" src="jquery-1.4.3.min.js"></script>
@@ -70,7 +70,7 @@
             <tr><td id="un" >Username</td><td><input  type="text" value="admin" name="username" onfocus="document.getElementById('login').style.background='#3882C7';document.getElementById('un').style.col='#fafafa'" ></td></tr>
             <tr><td><div id="un">Password</div></td><td><input type="password" onfocus="document.getElementById('login').style.background='#3882C7';document.getElementById('un').style.col='#fafafa'"  id="pass" name="password"></td></tr>
             <tr><td colspan="2" align="right" ><input type="submit" id="but" value="Login"> </td> </tr>
-            <tr><td colspan="2" align="right">Version 1.4<br>Deploy Date 26-Feb-16</td></tr>
+            <tr><td colspan="2" align="right">Version 1.4.1<br>Deploy Date 11-Mar-16</td></tr>
 
         </table>
             </form></td>

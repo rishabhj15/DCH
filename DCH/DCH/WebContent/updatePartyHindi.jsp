@@ -22,13 +22,10 @@
 <%
 User u=(User)session.getAttribute("user");
 if(u!=null){
-    String tab=request.getParameter("tab");
+    //String tab=request.getParameter("tab");
     
     String name=request.getParameter("name");
     String addr=request.getParameter("addr");
-    String tin=request.getParameter("tin");
-    String pno=request.getParameter("pno");
-    String trans=request.getParameter("trans");
     int id=Integer.parseInt(request.getParameter("id"));
     
     try {
@@ -38,22 +35,26 @@ if(u!=null){
                             Connection cn = DriverManager.getConnection(c.getURL());
                             PreparedStatement ps=null;
                             Statement st=cn.createStatement();
-                            int i=st.executeUpdate("Delete from "+tab+" where id="+id);
-                            out.print(i);
+                            //int i=st.executeUpdate("Delete from "+tab+" where id="+id);
+                            //out.print(i);
 
     
-    
-    ps=cn.prepareStatement("insert into "+tab+" values(?,?,?,?,?,?,?)");
-                            if(i!=0){
-                            ps.setInt(1, id);
-                            ps.setString(2, name);
-                            ps.setString(3, addr);
-                            ps.setString(4, tin);
-                            ps.setString(5, pno);
-                            ps.setString(6, trans);
-                            ps.setString(7, "a");
-                            ps.executeUpdate();
+                            ps=cn.prepareStatement("update party_hindi set name_hindi = ? , address_hindi = ? where pid = ?");
                             
+                            ps.setString(1, name);
+                            ps.setString(2, addr);
+                            ps.setInt(3, id);
+    if(ps.executeUpdate()==0){
+    	ps.close();
+    	
+    ps=cn.prepareStatement("insert into party_hindi values(?,?,?)");
+	
+	                            ps.setInt(1, id);
+	                            ps.setString(2, name);
+	                            ps.setString(3, addr);
+	                            ps.executeUpdate();
+	                            
+	
     }
     //out.print("<br>"+tab+"<br>"+id+"<br>"+val);
 

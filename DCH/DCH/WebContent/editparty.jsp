@@ -7,13 +7,14 @@
     Author     : Rishabh
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
         <title>JSP Page</title>
         <link rel="stylesheet" href="styles.css" />
     </head>
@@ -35,7 +36,7 @@ try {
                             while(rs.next()){
                                 out.print("<form target='_parent' action='updateparty.jsp?tab="+tab+"' method=post ><table align='center' >");
 
-                                out.print("<tr><td>Name</td><td><input type=text name=name value='"+rs.getString("name")+"'></td></tr>"
+                                out.print("<tr><td>Name</td><td><input type=text name=name style='padding: 10px;' value='"+rs.getString("name")+"'></td></tr>"
                                         + "<tr><td>Address</td><td><textarea rows=5 cols=25 name=addr>"+rs.getString("addr")+"</textarea></td></tr>"
                                         +"<tr><td>Tin</td><td><input type=text name=tin value='"+rs.getString("tin")+"'></td></tr>"
                                         +"<tr><td>Phones</td><td><input type=text name=pno value='"+rs.getString("pno")+"'></td></tr>"
