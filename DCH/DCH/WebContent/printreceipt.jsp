@@ -106,9 +106,15 @@ th,td{
                             	name_hindi = rs4.getString("name_hindi");
                             	address_hindi = rs4.getString("address_hindi");
                             }
+                            int recNo = -1;
+                            if(rs1.getInt("showid")==0){
+                            	recNo = rs1.getInt("id");
+                            }else{
+                            	recNo = rs1.getInt("showid");
+                            }
                             %>
                             <title>
-                                Receipt No: <%=id%>
+                                Receipt No: <%=recNo%>
                             </title>
     </head>
     <body>
@@ -118,8 +124,12 @@ th,td{
 
         
         while(rs3.next()&&rs3.getInt(1)!=Integer.parseInt(id)){
-            preDate="Prev Date: "+rs3.getString(2);
-            preRec=" | Receipt No: "+rs3.getString(1);
+            preDate="Prev Date: "+rs3.getString(3);
+            if(rs3.getString(2)==null){
+            	preRec=" | Receipt No: "+rs3.getString(1);
+            }else{
+            preRec=" | Receipt No: "+rs3.getString(2);
+            }
          }
         
                             out.print("<table id=main align='center'><tr><td id=topl valign=top>"
@@ -129,15 +139,16 @@ th,td{
                             	out.print("To:<b><span id='tem' style='color:black; font-size: large;'> "+name_hindi+", "+address_hindi+"</span></b><br>");
                             }
                             out.print("Tin No: <i><span id='tem'> "+rs2.getString("tin")+"</span></i><br>Phone: <i><span id='tem'> "+rs2.getString("pno")+"</span></i><br>Transport: ");
-                            if(rs1.getInt(5)!=0){
-                            out.print("<i>("+rs1.getInt(5)+")</i>");
+                            if(rs1.getInt("Treceipt")!=0){
+                            out.print("<i>("+rs1.getInt("Treceipt")+")</i>");
                             }
-                            if(!rs1.getString(6).equals("")){
-                            out.print("<i><span id='tem'> "+rs1.getString(6)+"</span></i>");
+                            if(!rs1.getString("tname").equals("")){
+                            out.print("<i><span id='tem'> "+rs1.getString("tname")+"</span></i>");
                             }else{
                             out.print("<i><span id='tem'> "+rs2.getString("trans")+"</span></i>");
                             }
-                            out.print("</div><div id=date>Date: "+rs1.getString("dat")+"  |  Receipt No: "+id+"</div><div id=date1>"+preDate+preRec+"</div></td><td id=topr><img src='diwakar1.png' alt='' width=225 height=125 ></td></tr>");
+                            
+                            out.print("</div><div id=date>Date: "+rs1.getString("dat")+"  |  Receipt No: "+recNo+"</div><div id=date1>"+preDate+preRec+"</div></td><td id=topr><img src='diwakar1.png' alt='' width=225 height=125 ></td></tr>");
                             
                             out.print("<tr><td colspan='2' ><table width=100% id=sub ><tr id=headr><th>S No</th><th width=40% align=left >Particular</th><th align=right >Bundle</th><th align=right>Size</th><th align=right>Loose</th><th align=right>Total</th></tr>");
                             int k=0;
@@ -163,10 +174,10 @@ th,td{
                                     + "<tr id=row >"
                                         + "<td id='adv' valign=middle colspan=2><img src='riniadds.png' alt='' width=301 height=25 > </td>"
                                         + "<td valign=middle colspan=4 align=right>");
-                            if(rs1.getInt(4)<=0){
+                            if(rs1.getInt("noparcel")<=0){
                             out.print("<table><tr><th><i>No. of Parcels:</i></th><td> ............</td></tr>");
                             }else{
-                            out.print("<table><tr><th><i>No. of Parcels:</i></th><td><u> &nbsp; &nbsp; &nbsp;&nbsp;"+rs1.getInt(4)+"</u></td></tr>");
+                            out.print("<table><tr><th><i>No. of Parcels:</i></th><td><u> &nbsp; &nbsp; &nbsp;&nbsp;"+rs1.getInt("noparcel")+"</u></td></tr>");
                             }
                             if(!rs1.getString("localtrans").equals("")){
                             out.print("<tr><th><i>Local Transport:</i></th><td><u> "+rs1.getString("localtrans")+" <u></td></tr>");

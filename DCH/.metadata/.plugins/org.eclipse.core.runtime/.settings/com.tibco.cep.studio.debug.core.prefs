@@ -1,0 +1,4 @@
+com.tibco.cep.studio.debug.core.PREF_CONNECT_TIMEOUT=3000
+com.tibco.cep.studio.debug.core.PREF_REQUEST_TIMEOUT=3000
+com.tibco.cep.studio.debug.core.default_breakpoint_suspend_policy=2
+eclipse.preferences.version=1

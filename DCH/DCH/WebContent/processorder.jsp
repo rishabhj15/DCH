@@ -52,11 +52,13 @@ parcel="0";
             int i=proid.length;
             try {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
-                rs=st.executeQuery("Select max(id) from transact");
+                //rs=st.executeQuery("Select max(id) from transact");
+                rs=st.executeQuery("Select max(showid) from transact");				//IDChange
                 Statement st1=cn.createStatement();
                 ResultSet rs1=null;
                 Statement st2=cn.createStatement();
                 Statement st3=cn.createStatement();
+                Statement st4=cn.createStatement();
                 ResultSet rs2=null;
                 ResultSet rs3=null;
                 rs.next();
@@ -64,7 +66,14 @@ parcel="0";
                 tid++;
                 java.util.Date d=new java.util.Date();
                 java.sql.Date da=new java.sql.Date(d.getTime());
-                st.executeUpdate("insert into transact values('"+tid+"','"+da+"','"+pid+"',"+parcel+",'0','','')");
+                int ret = st.executeUpdate("insert into transact values(null,'"+tid+"','"+da+"','"+pid+"',"+parcel+",'0','','')");
+                int traid = -1;
+                if(ret==1){
+                	ResultSet trid = st4.executeQuery("Select max(id) from transact") ;
+                	if(trid.next()){
+                		traid = trid.getInt(1);
+                	}
+                }
                 if(oid!=null){
                     st.executeUpdate("update `order` set status='d' where id="+oid);
                     st.executeUpdate("delete from order_list where  oid="+oid);
@@ -76,7 +85,7 @@ parcel="0";
                 rs1.next();
                 int did=rs1.getInt(1);
                 did++;
-                st1.executeUpdate("insert into dispatch values('"+did+"','"+tid+"',(select concat(product,' ',rulling) from stockwithid where id="+proid[j]+"),'"+b_order[j]+"','"+l_order[j]+"','"+bsize[j]+"','"+((Integer.parseInt(b_order[j])*Integer.parseInt(bsize[j]))+Integer.parseInt(l_order[j]))+"')");
+                st1.executeUpdate("insert into dispatch values('"+did+"','"+traid+"',(select concat(product,' ',rulling) from stockwithid where id="+proid[j]+"),'"+b_order[j]+"','"+l_order[j]+"','"+bsize[j]+"','"+((Integer.parseInt(b_order[j])*Integer.parseInt(bsize[j]))+Integer.parseInt(l_order[j]))+"')");
                     if(true){
                 rs2=st2.executeQuery("select * from bindquant where notebook="+proid[j]);
                 rs2.next();
@@ -99,8 +108,9 @@ parcel="0";
                 }
             }
                 temp.remove();
-                if(tid>=0){
-                response.sendRedirect("printreceipt.jsp?id="+tid);}
+                if(traid>=0){
+                response.sendRedirect("printreceipt.jsp?id="+traid);
+                }
 %>
 
         <%
