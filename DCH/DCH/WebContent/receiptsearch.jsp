@@ -4,29 +4,17 @@
     pageEncoding="ISO-8859-1"%>
         <%
         String q=request.getParameter("q");
-        //out.print(q);
+        Connection cn = null;
         try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             PreparedStatement ps = cn.prepareStatement(q);
                             ResultSet rs = ps.executeQuery();
                             Statement st=cn.createStatement();
                             Statement st1=cn.createStatement();
                             ResultSet rs1=null;
                             ResultSet rs2=null;
-/*                            ResultSet rs1=null;
-    int size =0;
-    if (rs != null)
-    {
-      rs.beforeFirst();
-      rs.last();
-      size = rs.getRow();
-      rs.beforeFirst();
-    }
-                            out.print("<table id='asform'><th colspan='10'>"+size+" Results Found</th></tr>");
-                            out.print("<tr><th>Sno.</th><th>ID</th><th>Paper Type</th><th>Quality</th><th>Size</th><th>Wt</th><th>Entry</th><th>Status</th><th>Updated</th><th>Action</th></tr>");
-                            int i=0;*/
                             int i=0,k=0,j=0,l=0;
                             out.print("*Mouseover for details.");
                             out.print("<table id='asform' ><tr><th>Sno.</th><th>Tran<br/>No.</th><th>Receipt<br/> No</th><th>Date</th><th>Party</th><th>Items</th><th>Parcel</th><th>Local Transporter</th><th>Transport</th><th>Action</th></tr>");
@@ -66,8 +54,13 @@
                             k=k+rs2.getInt(1);
                             }
                             out.print("<tr><th colspan=2 align=left>"+i+" reciepts</th><th colspan=3 align=right>Total: "+k+"</th><th>"+l+"</th><th colspan=4></th>");
-                            cn.close();
                         } catch (Exception ex) {
                             out.println(ex);
-                        }
+                        }finally {
+                        	  try{
+                      			cn.close();
+                      		}catch(Exception ex){
+                      			ex.printStackTrace();
+                      		}
+                          }
         %>

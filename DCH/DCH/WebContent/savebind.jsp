@@ -33,10 +33,12 @@ out.print(quant);
 java.util.Date d=new java.util.Date();
 java.sql.Date da= new java.sql.Date(d.getTime());
 java.sql.Timestamp da1=new java.sql.Timestamp(d.getTime());
+
+Connection cn = null;
 try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st=cn.createStatement();
                             ResultSet rs = st.executeQuery("Select max(id) from bind");
                             rs.next();
@@ -96,10 +98,15 @@ try {
                                                                 
                            st.executeUpdate("Update covtype set quantity="+newq+" where id="+rs1.getInt(1));*/
 //                           response.sendRedirect("home.jsp?q=viewStock#fragment-2");
-                                cn.close();
                         } catch (Exception ex) {
                             out.print(ex);
-                        }
+                        }finally {
+                        	  try{
+                      			cn.close();
+                      		}catch(Exception ex){
+                      			ex.printStackTrace();
+                      		}
+                          }
 %>
     </body>
 </html>

@@ -4,14 +4,13 @@
         <%
         String q=request.getParameter("q");
         
-        //out.print(""+q+"");
         out.print("<br>");
-        
+        Connection cn = null;
         
         try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             PreparedStatement ps = cn.prepareStatement(q);
                             ResultSet rs = ps.executeQuery();
                             Statement st=cn.createStatement();
@@ -40,8 +39,13 @@
                             out.print("</td></tr><tr><td colspan='10' align='right' id='"+rs.getInt(1)+"'></td></tr>");
                             }
                             out.print("</table>");
-                            cn.close();
                         } catch (Exception ex) {
                             out.println(ex);
-                        }
+                        }finally {
+                        	  try{
+                      			cn.close();
+                      		}catch(Exception ex){
+                      			ex.printStackTrace();
+                      		}
+                          }
         %>

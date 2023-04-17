@@ -21,18 +21,6 @@
             if (u != null) {
                 String q = request.getParameter("q");%>
 
-<%
-//out.print(q);
-    try {
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
-        Conf c = new Conf();
-        Connection cn = DriverManager.getConnection(c.getURL());
-
-
-%>
-
-
-
 <html>
     <head>
 
@@ -984,6 +972,14 @@
 
     </head>
     <body onLoad="goforit() ;">
+    
+    <%
+    Connection cn = null;
+    try {
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        Conf c = new Conf();
+        cn = DriverManager.getConnection(c.getURL());
+	%>
 
         <div id="conteneur">
             <div id="header">
@@ -2025,6 +2021,15 @@ String fromd = new SimpleDateFormat("yyyy-MM-dd").format(d);
                     <%}%>
                     <%} catch (Exception ex) {
                         out.println(ex);
+                    } finally{
+                    	try
+                        {                          
+                          cn.close();
+                        }
+                        catch (Exception e)
+                        {
+                        	e.printStackTrace();
+                        }
                     }%>
                     <script src="chosen/chosen.jquery.js" type="text/javascript"></script>
                     <script type="text/javascript">

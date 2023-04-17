@@ -73,10 +73,11 @@ String stat=request.getParameter("status");
         <tbody>
 <%
 String serv=request.getParameter("serv");
+Connection cn = null;
 try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st=cn.createStatement();
                             Statement st1=cn.createStatement();
                             Statement st2=cn.createStatement();
@@ -95,7 +96,6 @@ try {
                     <td align="left" ><%=rs.getString("tin")%></td>
                     <td align="left" ><%=rs.getString("pno")%></td>
                     <td align="left"><%=rs.getString("trans")%></td>
-                    <%--<td align="right" style=" float: left; vertical-align: top;"><a href="reamform.jsp?rid=<%=rs.getString("id")%>" id="example4" ><img width="20" src="images/proc.png"></a> <a id="example4" ><img width="20" src="images/edit.png"></a> <a onclick="return ask()" id="del"><img width="20" src="images/del.png"></a></td>--%>
                 </tr>
 
 
@@ -108,7 +108,7 @@ try {
 			<th>Name</th>
 			<th>Address</th>
 			<th>Tin</th>
-                        <th>Phone</th>
+            <th>Phone</th>
 			<th>Transport</th>
                         
 		</tr>
@@ -117,7 +117,13 @@ try {
                                     <%
 }catch (Exception ex) {
 out.print(ex);
-}
+}finally {
+	  try{
+			cn.close();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+  }
 %>
 
 

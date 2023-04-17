@@ -16,10 +16,11 @@ public class Messagebean {
 
     public String show(String command,int id){
         String resp="<table>";
+        Connection cn = null;
         try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st=cn.createStatement();
                             ResultSet rs = st.executeQuery("Select * from message");
         if(command.equals("inbox")){
@@ -27,8 +28,15 @@ public class Messagebean {
         resp=resp;//+"<tr><td>"+rs.getString("from")+"</td><td>"+rs.getString("subject")+"</td><td>"+rs.getString("content").substring(0, 10)+"</td></tr></table>";
                             }
         }          }catch(Exception ex){
+        	ex.printStackTrace();
 
-          }
+          }finally {
+        	  try{
+        			cn.close();
+        		}catch(Exception ex){
+        			ex.printStackTrace();
+        		}
+            }
         return resp;
     }
 

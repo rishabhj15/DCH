@@ -21,10 +21,11 @@
         String rull=request.getParameter("rulling");
         String party=request.getParameter("party");
         out.print("<div width=100% style='background-color:#cccfff;'> Results for "+prod+" "+rull+"</div>");
+        Connection cn = null;
         try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st= cn.createStatement();
                             Statement st1= cn.createStatement();
                             Statement st2= cn.createStatement();
@@ -48,7 +49,13 @@
                             out.print("</optgroup>");
         }catch(Exception ex){
         out.print(ex);
-        }
+        }finally {
+        	  try{
+      			cn.close();
+      		}catch(Exception ex){
+      			ex.printStackTrace();
+      		}
+          }
         %>
                     </select>
     </body>

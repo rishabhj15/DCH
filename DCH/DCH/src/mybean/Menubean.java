@@ -9,9 +9,11 @@ public  class Menubean
   public Menubean()   {  }
   public String  showMenu(String s,String k){
       String menu=null;
-      try{ Class.forName("com.mysql.jdbc.Driver").newInstance();
+      Connection cn = null;
+      try{
+    	  Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st=cn.createStatement();
       if(s.equals("readmore")){
   menu="<table align='left'>"
@@ -162,6 +164,13 @@ public  class Menubean
 
   }
       }catch(Exception ex){
+    	  ex.printStackTrace();
+      }finally {
+    	  try{
+  			cn.close();
+  		}catch(Exception ex){
+  			ex.printStackTrace();
+  		}
       }
       return menu;
   }

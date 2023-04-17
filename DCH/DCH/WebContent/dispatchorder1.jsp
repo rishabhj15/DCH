@@ -8,7 +8,7 @@
 <%
 String oid=request.getParameter("oid");
 String pid=request.getParameter("pid");
-
+Connection cn = null;
             try {
 
             Cart_1 temp=(Cart_1)session.getAttribute("ordercart");
@@ -19,7 +19,7 @@ String pid=request.getParameter("pid");
 
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st= cn.createStatement();
                             Statement st1= cn.createStatement();
                             ResultSet rs=null;
@@ -27,14 +27,6 @@ String pid=request.getParameter("pid");
                             rs1=st.executeQuery("Select name,addr from party where id="+pid);
                             rs1.next();
 
-
-            /*out.print("<form action='processorder.jsp' onsubmit='return checkvals()' method=post >");
-            out.print("<input id='party' name='party' type=hidden value="+pid+">");
-
-            out.print("<table border=1 style='border-collapse:collapse;'>"
-                    + "<tr><th colspan=2>Order No: "+oid+"</th><th colspan=5>"+rs1.getString(1)+", "+rs1.getString(2)+"</th></tr>"
-                    + "<tr id=headr><th>S No</th><th>Particular</th><th>Bundle</th><th>Loose</th><th>Size</th><th>Bundle</th><th>Loose</th></tr>");
-*/
                 rs=st1.executeQuery("SELECT * from order_vs_avail where order_id="+oid+" order by item_id");
 
                                int j=0;
@@ -48,24 +40,17 @@ String pid=request.getParameter("pid");
                     temp.add(I);
                     temp.updateParty(pid);
                     }
-  /*                  j++;
-                out.print("<tr>"
-                        + "<td>"+(j)+"</td>"
-                        + "<td>"+rs.getString("product")+"<input type=hidden name=oid value="+oid+">"+"<input type=hidden name=proid value="+rs.getString("proid")+">"+rs.getString("rulling")+"</td>"
-                        + "<td><input size=5 style='text-align:right;' name='bundle' value='"+rs.getInt("b_order")+"' type=text></td>"
-                        + "<td><input size=5 style='text-align:right;' name='loose' value='"+rs.getInt("l_order")+"' type=text></td>"
-                        + "<td><input size=5 style='text-align:right;' readonly name='bsize' tabindex=-1 value='"+rs.getInt("s_avl")+"' type=text></td>"
-                        + "<td><input size=5 style='text-align:right;' name='loose' value='"+rs.getInt("b_avl")+"' type=text></td>"
-                        + "<td><input size=5 style='text-align:right;' name='loose' value='"+rs.getInt("l_avl")+"' type=text></td></tr>");
-    */
                                }
                            rs.close();
 
-            //out.print("<tr><td><b>"+totalt+"</b></td><td><b>Total</td><td align=right><b>"+bundlet+"</b></td><td align=right><b>"+looset+"</b></td><td></td><td/></tr><tr><td align='center' colspan=4><span id='msg' style='background-color: firebrick; color: white;' ></span></td><td colspan=2 align=right><input type=submit value='Save Order'></td></tr>");
-
-//            out.print("</table><input type=submit value=Submit></input></form>");
 response.sendRedirect("order2.jsp?party="+pid+"&oid="+oid);
             }catch(Exception ex){
             out.print(ex);
-            }
+            }finally {
+            	  try{
+          			cn.close();
+          		}catch(Exception ex){
+          			ex.printStackTrace();
+          		}
+              }
 %>

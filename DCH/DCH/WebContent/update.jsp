@@ -24,11 +24,12 @@ if(u!=null){
     String tab=request.getParameter("tab");
     int id=Integer.parseInt(request.getParameter("id"));
     String val=null;
+    Connection cn = null;
     try {
 
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             PreparedStatement ps=null;
                             Statement st=cn.createStatement();
                             if(tab.equals("bindmat")){
@@ -132,7 +133,13 @@ if(u!=null){
 
 } catch (Exception ex) {
 out.println(ex);
-}
+}finally {
+	  try{
+			cn.close();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+  }
 }
 %>
     </body>

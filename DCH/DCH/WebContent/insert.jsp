@@ -27,10 +27,11 @@ User u=(User)session.getAttribute("user");
     String pno=null;
     String rate=null;
     String area=null;
+    Connection cn = null;
 try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             String sql="insert into "+tab+" values(?,?,?)";
                             
                             Statement st=cn.createStatement();
@@ -130,7 +131,6 @@ try {
                             
                             int i=ps.executeUpdate();
 
-                            cn.close();
                             out.print(i);
                             if(i==1){
                                response.sendRedirect("home.jsp?q=db"+red);
@@ -139,9 +139,13 @@ try {
 }
 catch (Exception ex) {
 out.println(ex);
-}
-//}else{You are not authorized. Please Login.%>
-
-        <%//}%>
+}finally {
+	  try{
+			cn.close();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+  }
+%>
     </body>
 </html>

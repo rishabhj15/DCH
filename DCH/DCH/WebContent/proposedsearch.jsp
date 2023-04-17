@@ -6,10 +6,11 @@ String q1=request.getParameter("q1");
 //String q3=request.getParameter("q3");
 //String q4=request.getParameter("q4");
 out.println("<hr><b>You queried for : </b>"+q1+"<hr>");
+Connection cn = null;
         try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st= cn.createStatement();
                             Statement st1= cn.createStatement();
                             Statement st2= cn.createStatement();
@@ -48,5 +49,12 @@ out.println("<hr><b>You queried for : </b>"+q1+"<hr>");
 } catch (Exception ex) {
                             out.println(ex.toString());
                         }
+        finally {
+        	  try{
+      			cn.close();
+      		}catch(Exception ex){
+      			ex.printStackTrace();
+      		}
+          }
 
 %>

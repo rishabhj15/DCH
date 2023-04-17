@@ -23,10 +23,11 @@ User u=(User)session.getAttribute("user");
 if(u!=null){
     String tab=request.getParameter("tab");
     String id=request.getParameter("id");
+    Connection cn = null;
 try {
-                            Class.forName("com.mysql.jdbc.Driver").newInstance();
+							Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st=cn.createStatement();
                             String sql="Select * from "+tab+" where id="+id;
                             String red="#";
@@ -72,7 +73,13 @@ try {
 
 } catch (Exception ex) {
 out.println(ex);
-}
+}finally {
+	  try{
+			cn.close();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+  }
 }else{%>
 You are not authorized. Please Login.
         <%}%>

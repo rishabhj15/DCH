@@ -24,17 +24,24 @@ String localtn=request.getParameter("localtransname");
 if(parcel.matches("[a-z]*")){
 out.print("<span style='color:red;'>Invalid Character<span>");
 }else{
+	Connection cn = null;
             try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st=cn.createStatement();
                             int i=st.executeUpdate("update transact set `tname`='"+tn+"', `treceipt`='"+trec+"', noparcel="+parcel+", `localtrans`='"+localtn+"' where id="+id);
                             out.print(i+" record updated.");
-                           // response.sendRedirect("home.jsp?q=print");
 }catch (Exception ex) {
 out.print(ex);
-}}
+}finally {
+	  try{
+			cn.close();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+  }
+            }
 %>
     </body>
 </html>

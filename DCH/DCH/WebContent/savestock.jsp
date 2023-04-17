@@ -26,10 +26,11 @@ String wt[]=request.getParameterValues("w");
 java.util.Date d=new java.util.Date();
 java.sql.Date da=new java.sql.Date(d.getTime());
 
+Connection cn = null;
 try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st=cn.createStatement();
                             ResultSet rs = st.executeQuery("Select max(id) from reel");
                             rs.next();
@@ -50,10 +51,15 @@ try {
                             mid++;
                             }
                             response.sendRedirect("home.jsp?q=Success");
-                                cn.close();
                         } catch (Exception ex) {
                             out.println(ex);
-                        }
+                        }finally {
+                        	  try{
+                      			cn.close();
+                      		}catch(Exception ex){
+                      			ex.printStackTrace();
+                      		}
+                          }
 %>
     </body>
 </html>

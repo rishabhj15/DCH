@@ -21,24 +21,18 @@
     <body bgcolor="blue" >
 <%
 User u=(User)session.getAttribute("user");
-if(u!=null){
-    //String tab=request.getParameter("tab");
-    
+if(u!=null){    
     String name=request.getParameter("name");
     String addr=request.getParameter("addr");
     int id=Integer.parseInt(request.getParameter("id"));
-    
+    Connection cn = null;
     try {
 
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             PreparedStatement ps=null;
-                            Statement st=cn.createStatement();
-                            //int i=st.executeUpdate("Delete from "+tab+" where id="+id);
-                            //out.print(i);
-
-    
+                            Statement st=cn.createStatement();    
                             ps=cn.prepareStatement("update party_hindi set name_hindi = ? , address_hindi = ? where pid = ?");
                             
                             ps.setString(1, name);
@@ -65,7 +59,13 @@ if(u!=null){
 response.sendRedirect("home.jsp?q=db"+red);
 } catch (Exception ex) {
 out.println(ex);
-}
+}finally {
+	  try{
+			cn.close();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+  }
 }
 %>
     </body>

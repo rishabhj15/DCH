@@ -41,7 +41,7 @@ if(notebookq==''||bind==''){
 }
 else{
 if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  {
   xmlhttp=new XMLHttpRequest();
   }
 xmlhttp.onreadystatechange=function()
@@ -51,13 +51,7 @@ xmlhttp.onreadystatechange=function()
 
 
 document.write("<p align=right><a href='home.jsp?q=viewStock1#fragment-3' target='_parent'> Close and go to page</a></p><h2 align='center' style='background-color: firebrick; color: white;'>Updated Successfully</h2><div id='res'></div>");
-//document.getElementById("res").innerHTML=xmlhttp.responseText;
 
-    //texthint2();
-    //document.getElementById("res").innerHTML="<h2 align='center' style='background-color: firebrick; color: white;'>Updated Successfully</h2>";
-    //$("#res").show();
-    //$("#res").fadeOut(4000);
-    //document.getElementById("res").innerHTML="";
     }
 
   }
@@ -100,7 +94,6 @@ xmlhttp.send();
 function check1(){
         str=document.getElementById("nb").value;
 
-       // document.getElementById("covq").innerHTML="<span><img src='loadimg.gif' id='load' alt='' width='10' height='10'></span>";
 var xmlhttp;
 if (str=="")
   {
@@ -108,7 +101,7 @@ if (str=="")
   return;
   }
 if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  {
   xmlhttp=new XMLHttpRequest();
   }
 xmlhttp.onreadystatechange=function()
@@ -128,11 +121,11 @@ String q1=request.getParameter("q1");
 String q3=request.getParameter("q3");
 String q4=request.getParameter("q4");
 String r=request.getParameter("r");
-//out.println("<hr><b>You queried for : </b>"+q1+" "+q3+" "+q4+"<hr>");
+Connection cn = null;
         try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st= cn.createStatement();
                             Statement st1= cn.createStatement();
                             Statement st2= cn.createStatement();
@@ -140,24 +133,7 @@ String r=request.getParameter("r");
                             Statement st4= cn.createStatement();
                             ResultSet rs=null;
                            String sql="select A.quantity,A.psize,A.rulling,B.type,C.type from reamquant as A,papersize as B,rulling as C where A.quality='"+q1+"' and A.psize="+q3+" and A.rulling="+q4+" and A.psize=B.id and A.rulling=C.id";
-                            //String sql="select sum(quantity) from ream as A, reel as B where A.status='rulled' and B.status='rulled' and A.pid=B.id and B.quality='"+q1+"' and A.psize='"+q3+"' and A.ruling='"+q3+"'";
- //                           String t1="and B.quality='"+q1+"' " ;
-   //                         String t3="and A.psize="+q3+" ";
-     //                       String t4="and A.ruling="+q4+" ";
-       //                     String t5="and A.contractor="+q5+" ";
-         /*                   if(q1.equals("default")){
-                            sql=sql+t3+t4+t5;
-                            }
-                            if(q3.equals("default")){
-                            sql=sql+t1+t4+t5;
-                            }
-                            if(q4.equals("default")){
-                            sql=sql+t1+t3+t5;
-                            }
-                            if(q5.equals("default")){
-                            sql=sql+t1+t3+t4;
-                            }*/
-                            //out.println("<br>"+sql);
+                            
                             rs = st.executeQuery(sql);
                             ResultSet rs1=st1.executeQuery("Select * from contractor where sta='a' and area='binding'");
                             ResultSet rs2=st2.executeQuery("Select * from notebook where sta='a' and pno="+q4);
@@ -179,9 +155,7 @@ String r=request.getParameter("r");
                             out.print("<tr><td>Select Notebook</td><td><select class='chzn-select' onchange='check1()' id='nb' name='notebook'>");
                             while(rs2.next()){
                             rs3=st3.executeQuery("Select A.name,B.type,A.quantity from covtype A,rulling B where A.id="+rs2.getString(2)+" and B.id="+rs2.getString(3));
-                            //rs4=st3.executeQuery("Select * from rulling where id="+rs2.getString(3));
                             
-                            //rs4.next();
                             rs3.next();
                             out.print("<option value="+rs2.getInt(1)+">"+rs3.getString(1)+" "+rs3.getString(2)+" | Covers <i>"+rs3.getString(3)+"</i></option>");
                             }
@@ -195,8 +169,14 @@ String r=request.getParameter("r");
                             out.print("<table align=center id='asform'><tr><th><h3>Not Available</h3></th></tr></table></div>");
                             }
                         } catch (Exception ex) {
-                            //out.println(ex);
-                        }
+                            
+                        }finally {
+                        	  try{
+                      			cn.close();
+                      		}catch(Exception ex){
+                      			ex.printStackTrace();
+                      		}
+                          }
 %>
 <script type="text/javascript">
 

@@ -3,12 +3,11 @@
 
 <%
 String q1=request.getParameter("q1");
-//String q3=request.getParameter("q3");
-//String q4=request.getParameter("q4");
+Connection cn = null;
         try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st= cn.createStatement();
                             Statement st1= cn.createStatement();
                             //ResultSet rs= st.executeQuery("Select bsize,bundle,loose,bsize,quantity from bindquant where notebook="+q1);
@@ -28,9 +27,14 @@ String q1=request.getParameter("q1");
                                 }*/
                             out.print( "<tr><td>Total</td><td><input type=text name=ts id='ts' ></td><td>Available:"+rs.getString("quantity")+"</td></tr>"
                                                 +"<tr><td align='right' colspan=2><input type=submit id='but' value='Add'</td></tr>");
-                            cn.close();
 } catch (Exception ex) {
                             out.println(ex);
-                        }
+                        }finally {
+                        	  try{
+                      			cn.close();
+                      		}catch(Exception ex){
+                      			ex.printStackTrace();
+                      		}
+                          }
 
 %>

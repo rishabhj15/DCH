@@ -25,10 +25,11 @@
             ArrayList al=temp.get();
             if(!al.isEmpty()){
             int i=al.size();
+            Connection cn = null;
             try {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();
                 Conf c=new Conf();
-                Connection cn = DriverManager.getConnection(c.getURL());
+                cn = DriverManager.getConnection(c.getURL());
                 PreparedStatement ps=null;
                 Statement st=cn.createStatement();
                 ResultSet rs=st.executeQuery("Select max(id) from transact");
@@ -78,7 +79,13 @@
         <%
 }catch(Exception e){
 out.print(e);
-}
+}finally {
+	  try{
+			cn.close();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+  }
 
 }else{
 out.print("<h1>Invalid Operation</h1>");

@@ -20,10 +20,11 @@
 String id=request.getParameter("bindmat");
 String quantity=request.getParameter("matq");
 int q=Integer.parseInt(quantity);
+Connection cn = null;
 try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st=cn.createStatement();
                             ResultSet rs = st.executeQuery("select avl from bindmat where id="+id);
                             rs.next();
@@ -40,10 +41,15 @@ try {
 
 
                             response.sendRedirect("home.jsp?q=addStock#fragment-5");
-                                cn.close();
                         } catch (Exception ex) {
                             out.println(ex);
-                        }
+                        }finally {
+                        	  try{
+                      			cn.close();
+                      		}catch(Exception ex){
+                      			ex.printStackTrace();
+                      		}
+                          }
 %>
     </body>
 </html>

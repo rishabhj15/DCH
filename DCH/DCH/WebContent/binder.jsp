@@ -4,12 +4,13 @@
 <%
 String q=request.getParameter("q");
 String q1=request.getParameter("q1");
-//String q4=request.getParameter("q4");
-//out.print(q);
+
+Connection cn = null;
+
         try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st= cn.createStatement();
                             Statement st1= cn.createStatement();
                             ResultSet rs= st.executeQuery(q);
@@ -78,7 +79,13 @@ String q1=request.getParameter("q1");
                                     + "<tr><th align=right>Difference:</th><th align=right><input type=text id='diff' style='text-align: right;' size=10 value=0></th></tr></table>");
 } catch (Exception ex) {
                             out.println(ex);
-                        }
+                        }finally {
+                        	  try{
+                      			cn.close();
+                      		}catch(Exception ex){
+                      			ex.printStackTrace();
+                      		}
+                          }
 
 %>
 

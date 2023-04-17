@@ -21,9 +21,9 @@ String rulling=request.getParameter("rulling");
 String contractor=request.getParameter("contractor");
 String quantity=request.getParameter("quantity");
 float quant=Float.parseFloat(quantity);
-//out.print(quant+"<br>");
+
 String rid=request.getParameter("rid");
-//out.print(rid+"<br>"+rulling+"<br>"+contractor+"<br>"+quantity+"<br>"+rid);
+
 
 
 java.util.Date d=new java.util.Date();
@@ -31,10 +31,12 @@ java.sql.Date da=new java.sql.Date(d.getTime());
 String date=d.toString();
 String []dat=date.split(" ");
 String findate=dat[5]+"-"+dat[1]+"-"+dat[2];
+
+Connection cn = null;
 try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st=cn.createStatement();
                             ResultSet rs = st.executeQuery("Select max(id) from ream");
                             rs.next();
@@ -81,11 +83,16 @@ try {
                             }
                             out.print("Updated Successfully");
                             
-                            //response.sendRedirect("home.jsp?q=viewStock");
-                                cn.close();
+
                         } catch (Exception ex) {
                             out.println(ex);
-                        }
+                        }finally {
+                        	  try{
+                      			cn.close();
+                      		}catch(Exception ex){
+                      			ex.printStackTrace();
+                      		}
+                          }
 %>
 
     </body>

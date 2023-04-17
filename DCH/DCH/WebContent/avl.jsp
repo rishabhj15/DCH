@@ -3,11 +3,11 @@
 
         <%
         String q=request.getParameter("q");
-        
+        Connection cn = null;
         try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             PreparedStatement ps = cn.prepareStatement(q);
                             ResultSet rs = ps.executeQuery();
 
@@ -34,9 +34,14 @@
                             }else{
                             out.print("0 Available");
                             }
-                            cn.close();
                         } catch (Exception ex) {
                             out.println(ex);
+                        }finally {
+                      	  try{
+                    			cn.close();
+                    		}catch(Exception ex){
+                    			ex.printStackTrace();
+                    		}
                         }
         %>
         

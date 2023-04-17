@@ -20,10 +20,11 @@ String quality=request.getParameter("quality");
 String psize=request.getParameter("size");
 String rulling=request.getParameter("rulling");
 String q=request.getParameter("quantity");
+Connection cn = null;
 try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st=cn.createStatement();
                             Statement st1=cn.createStatement();
 
@@ -52,10 +53,15 @@ try {
                             ps2.executeUpdate();
                             }
 response.sendRedirect("home.jsp?q=addStock#fragment-4");
-                                cn.close();
                         } catch (Exception ex) {
                             out.println(ex);
-                        }
+                        }finally {
+                        	  try{
+                      			cn.close();
+                      		}catch(Exception ex){
+                      			ex.printStackTrace();
+                      		}
+                          }
 %>
     </body>
 </html>

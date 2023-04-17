@@ -26,21 +26,28 @@ String id=request.getParameter("id");
 if(user.equals("")||pass.equals("")){
 out.print("Invalid Operation.");
 }else{
-    
+	Connection cn = null;
 try {
+	
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             PreparedStatement ps=cn.prepareStatement("update user set username=?,password=? where id="+id);
                             ps.setString(1, user);
                             ps.setString(2, pass);
                             ps.executeUpdate();
-                            cn.close();
                             response.sendRedirect("home.jsp?q=db#fragment-9");
 
 } catch (Exception ex) {
 out.println(ex);
-}}
+}finally {
+	  try{
+			cn.close();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+  }
+}
 }else{%>
 You are not authorized. Please Login.
         <%}%>

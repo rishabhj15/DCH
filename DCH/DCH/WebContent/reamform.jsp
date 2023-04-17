@@ -29,7 +29,7 @@ if(quantity==''){
 }
 else{
 if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  {
   xmlhttp=new XMLHttpRequest();
   }
 xmlhttp.onreadystatechange=function()
@@ -37,14 +37,6 @@ xmlhttp.onreadystatechange=function()
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
     document.getElementById(str).innerHTML=xmlhttp.responseText;
-    //$("#"+str).slideUp(2000);
-    //document.getElementById(str).innerHTML="<h2 align='center' style='background-color: firebrick; color: white;'>Updated Successfully</h2>";
-    //$("#"+str).show();
-    //$("#"+str).fadeOut(4000);
-    //document.getElementById('action'+str).style.background='#ffffff';
-    //document.getElementById('action'+str).innerHTML='<img src=green.jpg width=30 height=30>  ';
-    //document.getElementById('sdate'+str).innerHTML='a moment ago.';
-    //document.getElementById('sta'+str).innerHTML='Rulled';
     }
 
   }
@@ -79,12 +71,11 @@ return valid;
     </head>
     <body style=" background-image: url('back.gif') " >
 <%
-
-//out.print("Unique Number:"+rid);
+Connection cn = null;
 try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
 
                             Statement st=cn.createStatement();
                             Statement st1=cn.createStatement();
@@ -113,10 +104,15 @@ try {
                                                <%rs=st.executeQuery("Select * from contractor where sta='a' and area='rulling' order by id");%>
                                 <td align="right">Contractor</td><td><select style=" width: 10em; " id="reamcontractor<%=rid%>" name="contractor"><%while(rs.next()){%><option value="<%=rs.getString(1)%>"><%=rs.getString(2)%></option><%}%></select> </td>
                             <%
-                            cn.close();
                         } catch (Exception ex) {
                             out.println(ex);
-                        }
+                        }finally {
+                        	  try{
+                      			cn.close();
+                      		}catch(Exception ex){
+                      			ex.printStackTrace();
+                      		}
+                          }
 %>
             </tr>
             <tr>

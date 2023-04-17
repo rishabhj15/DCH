@@ -26,22 +26,20 @@ if(u!=null){
     String lquant=request.getParameter("lquant");
     String tquant=request.getParameter("tquant");
     String bsize=request.getParameter("bsize");
-   //out.print(id+" "+bquant+" "+lquant);
     if(id!=null&&bquant!=null&&lquant!=null){
+    	Connection cn = null;
     try {
                             java.util.Date d=new java.util.Date();
                             java.sql.Date da=new java.sql.Date(d.getTime());
 
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             PreparedStatement ps=null;
                             Statement st=cn.createStatement();
                             java.util.Date d1=new java.util.Date();
                             java.sql.Timestamp da1=new java.sql.Timestamp(d1.getTime());
                             int i=st.executeUpdate("update bindquant set bundle="+bquant+",bsize='"+bsize+"', loose='"+lquant+"',quantity='"+tquant+"',updated='"+da1+"' where id='"+id+"'");
-                            cn.close();
-                           // out.print(i);
                             if(i==1){
 
                             response.sendRedirect("home.jsp?q=viewStock2#fragment-5");
@@ -51,7 +49,13 @@ if(u!=null){
                             }
 } catch (Exception ex) {
 out.println(ex);
-}
+}finally {
+	  try{
+			cn.close();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+  }
 }
 }else{
 response.sendRedirect("index.jsp");

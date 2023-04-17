@@ -26,11 +26,12 @@ int o=0;
 
 
 int h=0;
+Connection cn = null;
         try {
             o=Integer.parseInt(request.getParameter("oid"));
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st= cn.createStatement();
                             Statement st1= cn.createStatement();
                             Statement st2= cn.createStatement();
@@ -69,7 +70,13 @@ int h=0;
 
                             }catch(Exception ex){
                             out.print(ex);
-                            }
+                            }finally {
+                            	  try{
+                          			cn.close();
+                          		}catch(Exception ex){
+                          			ex.printStackTrace();
+                          		}
+                              }
 out.print("<h3>Order saved successfully.</h3>"+o);
 session.removeAttribute("ordercart");
 response.sendRedirect("home.jsp?q=order");

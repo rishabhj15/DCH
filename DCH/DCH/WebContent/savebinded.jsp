@@ -26,10 +26,11 @@ String rulling=request.getParameter("rulling");*/
 String notebook=request.getParameter("notebook");
 String total=request.getParameter("total");
 //String bsize=request.getParameter("size");
+Connection cn = null;
 try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st=cn.createStatement();
                             Statement st3=cn.createStatement();
                             //ResultSet rs2=st.executeQuery("Select bundle,loose,quantity from bindquant where notebook='"+notebook+"'");
@@ -81,10 +82,15 @@ try {
 
                            st.executeUpdate("Update covtype set quantity="+newq+" where id="+rs1.getInt(1));
                            out.println("<h2 align='center' style='background-color: firebrick; color: white;'>Updated Successfully</h2>");
-        cn.close();
                         } catch (Exception ex) {
                             out.print(ex);
-                        }
+                        }finally {
+                        	  try{
+                      			cn.close();
+                      		}catch(Exception ex){
+                      			ex.printStackTrace();
+                      		}
+                          }
 
 %>
     </body>

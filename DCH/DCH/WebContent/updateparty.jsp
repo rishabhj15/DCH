@@ -30,12 +30,12 @@ if(u!=null){
     String pno=request.getParameter("pno");
     String trans=request.getParameter("trans");
     int id=Integer.parseInt(request.getParameter("id"));
-    
+    Connection cn = null;
     try {
 
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             PreparedStatement ps=null;
                             Statement st=cn.createStatement();
                             int i=st.executeUpdate("Delete from "+tab+" where id="+id);
@@ -55,7 +55,6 @@ if(u!=null){
                             ps.executeUpdate();
                             
     }
-    //out.print("<br>"+tab+"<br>"+id+"<br>"+val);
 
 
                           
@@ -64,7 +63,13 @@ if(u!=null){
 response.sendRedirect("home.jsp?q=db"+red);
 } catch (Exception ex) {
 out.println(ex);
-}
+}finally {
+	  try{
+			cn.close();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+  }
 }
 %>
     </body>

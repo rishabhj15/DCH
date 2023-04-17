@@ -38,10 +38,13 @@ String td=request.getParameter("tod");
     <body>
         <input type="hidden" id="nbid" value="<%=nbid%>">
         <input type="hidden" id="prod" value="<%=prod%>">
-        <%try {int total=0;
+        <%
+        Connection cn = null;
+        try {
+        					int total=0;
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st=cn.createStatement();
                             ResultSet rs=null;
                             String fromd,tod;
@@ -50,11 +53,11 @@ String td=request.getParameter("tod");
                                 tod = new SimpleDateFormat("yyyy-MM-dd").format(d);
                                 d.setDate(d.getDate() - 30);
                                 fromd = new SimpleDateFormat("yyyy-MM-dd").format(d);
-                                rs=st.executeQuery("Select * from bind A,papersize B,rulling C, Contractor D, stockwithid E,bindqual F where A.bindquantid="+nbid+" and A.psize=B.id and A.rulling=C.id and A.contractor=D.id and A.bindquantid=E.id and A.bindqualid=F.id order by dat");
+                                rs=st.executeQuery("Select * from bind A,papersize B,rulling C, contractor D, stockwithid E,bindqual F where A.bindquantid="+nbid+" and A.psize=B.id and A.rulling=C.id and A.contractor=D.id and A.bindquantid=E.id and A.bindqualid=F.id order by dat");
                             }else{
                                 tod = td;
                                 fromd = fd;
-                                rs=st.executeQuery("Select * from bind A,papersize B,rulling C, Contractor D, stockwithid E,bindqual F where A.bindquantid="+nbid+" and A.psize=B.id and A.rulling=C.id and A.contractor=D.id and A.bindquantid=E.id and A.bindqualid=F.id and A.dat between '"+fd+"' and '"+td+"' order by dat");
+                                rs=st.executeQuery("Select * from bind A,papersize B,rulling C, contractor D, stockwithid E,bindqual F where A.bindquantid="+nbid+" and A.psize=B.id and A.rulling=C.id and A.contractor=D.id and A.bindquantid=E.id and A.bindqualid=F.id and A.dat between '"+fd+"' and '"+td+"' order by dat");
                             }
 %>
 <h2 style=" background-color: #7bd2f9; color: #e14f1c;  position: fixed; left: 75%; right: 0% " ><%=prod%></h2>
@@ -102,6 +105,12 @@ rs=st.executeQuery("Select * from dispatch A,transact B,party C where A.particul
 <%
 }catch (Exception ex) {
 out.print(ex);
+}finally{
+	try{
+		cn.close();
+	}catch (Exception ex){
+		out.print(ex);
+	}
 }
 %>
     </body>

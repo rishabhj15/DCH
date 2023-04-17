@@ -19,12 +19,12 @@ if(u!=null){
     String tin=request.getParameter("tin");
     String pno=request.getParameter("pno");
     String trans=request.getParameter("trans");
-
+    Connection cn = null;
 
 try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             String sql="insert into party values(?,?,?,?,?,?,?)";
                             Statement st=cn.createStatement();
                             ResultSet rs=st.executeQuery("Select max(id) from party");
@@ -42,7 +42,13 @@ try {
                             response.sendRedirect("home.jsp?q=db#fragment-8");
 } catch (Exception ex) {
 out.println(ex);
-}
+}finally {
+	  try{
+			cn.close();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+  }
 }else{%>
 You are not authorized. Please Login.
         <%}%>

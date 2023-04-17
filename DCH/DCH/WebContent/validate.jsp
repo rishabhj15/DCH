@@ -28,11 +28,11 @@
                 <br>Please<a href="index.jsp"> Login.</a>
 
                 <%}else{
-
+                	Connection cn = null;
                         try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             PreparedStatement ps = cn.prepareStatement("SELECT password,id from user where username='"+u+"'");
                             Statement st=cn.createStatement();
                             ResultSet rs = ps.executeQuery();
@@ -46,12 +46,17 @@
             }else{response.sendRedirect("index.jsp");%>
 
                 <%                    }
-                            cn.close();
                         } catch (Exception ex) {
                             ex.printStackTrace();
                             out.println("<h1>Please Start MySql Server or Load Required Driver.</h1>");
                             out.println(ex);
-                        }
+                        }finally {
+                        	  try{
+                      			cn.close();
+                      		}catch(Exception ex){
+                      			ex.printStackTrace();
+                      		}
+                          }
 }%>
     </body>
 </html>

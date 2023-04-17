@@ -16,36 +16,24 @@
     </head>
     <body>
 <%
-//String quality=request.getParameter("quality");
-//String psize=request.getParameter("psize");
-//String rulling=request.getParameter("rulling");
 String notebook=request.getParameter("notebook");
-//String loose=request.getParameter("loose");
-//String bundle=request.getParameter("bundle");
 String total=request.getParameter("ts");
-//String bsize=request.getParameter("bs");
-//int q=Integer.parseInt(quantity);
+Connection cn = null;
 try {
                             java.util.Date d1=new java.util.Date();
                             java.sql.Timestamp da1=new java.sql.Timestamp(d1.getTime());
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st=cn.createStatement();
                             Statement st1=cn.createStatement();
                             ResultSet rs4=st1.executeQuery("Select pno from notebook where id="+notebook);
                             rs4.next();
                             String rulling=rs4.getString(1);
                             ResultSet rs2=st.executeQuery("Select quantity from bindquant where  notebook='"+notebook+"'");
-                            //float f1=Float.parseFloat(bundle);
-                            //float f2=Float.parseFloat(loose);
                             float f3=Float.parseFloat(total);
                             if(rs2.next()){
-                                //quant=quant+rs2.getFloat(1);
-                            //f1=rs2.getFloat(1)+f1;
-                            //f2=rs2.getFloat(2)+f2;
                             f3=rs2.getFloat(1)+f3;
-                            //st.executeUpdate("Update bindquant set bundle='"+f1+"',loose='"+f2+"',quantity='"+f3+"',updated='"+da1+"' where notebook='"+notebook+"'");
                             st.executeUpdate("Update bindquant set quantity='"+f3+"',updated='"+da1+"' where notebook='"+notebook+"'");
                             }else{
                             PreparedStatement ps2 = cn.prepareStatement("insert into bindquant values(?,?,?,?,?,?,?,?,?,?)");
@@ -65,11 +53,16 @@ try {
                             ps2.setTimestamp(10, da1);
                             ps2.executeUpdate();
                             }
-response.sendRedirect("home.jsp?q=addStock#fragment-3");
-                                cn.close();
+								response.sendRedirect("home.jsp?q=addStock#fragment-3");
                         } catch (Exception ex) {
                             out.println(ex);
-                        }
+                        }finally {
+                        	  try{
+                      			cn.close();
+                      		}catch(Exception ex){
+                      			ex.printStackTrace();
+                      		}
+                          }
 %>
     </body>
 </html>

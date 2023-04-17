@@ -3,11 +3,11 @@
 <%@page import="mybean.Conf"%>
 <%
 String prod=request.getParameter("product");
-
+Connection cn = null;
 try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st= cn.createStatement();
                             ResultSet rs = st.executeQuery("Select size,net_quantity,concat(product,' ',rulling) from stockwithid where id="+prod);
                             if(rs.next()){
@@ -27,12 +27,17 @@ try {
                             }
                             rs.close();
                             st.close();
-                            cn.close();
                             
 }catch(MySQLSyntaxErrorException e){
         out.print("<fieldset><legend>Availablity</legend>Invalid Product Id</fieldset>");
 }
 catch(Exception ex){
         out.print(ex);
-        }
+        }finally {
+        	  try{
+      			cn.close();
+      		}catch(Exception ex){
+      			ex.printStackTrace();
+      		}
+          }
 %>

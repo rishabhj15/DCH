@@ -37,11 +37,11 @@ parcel="0";
         out.println(b_order[0]);
         out.println(l_order[0]);
         out.println(bsize[0]);
-
+        Connection cn = null;
  try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st= cn.createStatement();
                             ResultSet rs=null;
 
@@ -124,7 +124,13 @@ out.print("<h1>Invalid Operation</h1>");
 
  }catch(Exception ex){
 out.println(ex);
- }
+ }finally {
+ 	  try{
+			cn.close();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+   }
 
 %>
     </body>

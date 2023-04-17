@@ -7,13 +7,15 @@ String q1=request.getParameter("q1");
 String tab=request.getParameter("t");
 //String q4=request.getParameter("q4");
 //out.println("<hr><b>You queried for : </b>"+q+"<hr>");
+
+Connection cn = null;
         try {
             if(tab.equals("bind")){%>
             <jsp:include page="binder.jsp"><jsp:param name="q" value="<%=q%>"></jsp:param><jsp:param name="q1" value="<%=q1%>" ></jsp:param> </jsp:include>
             <%}else{
             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st= cn.createStatement();
                             Statement st1= cn.createStatement();
                             Statement st2= cn.createStatement();
@@ -49,7 +51,13 @@ String tab=request.getParameter("t");
 }
 } catch (Exception ex) {
                             out.println(ex);
-                        }
+                        }finally {
+                        	  try{
+                      			cn.close();
+                      		}catch(Exception ex){
+                      			ex.printStackTrace();
+                      		}
+                          }
 
 %>
 

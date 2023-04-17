@@ -20,10 +20,11 @@
 String bid=request.getParameter("bindmat");
 String contr=request.getParameter("contr");
 String quantity=request.getParameter("matq");
+Connection cn = null;
 try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st=cn.createStatement();
                             Statement st3=cn.createStatement();
                             ResultSet rs2=st.executeQuery("Select avl from bindmat where id="+bid);
@@ -47,11 +48,16 @@ try {
                             ps2.setFloat(5, f1);
                             ps2.executeUpdate();
                             
-        cn.close();
                                     response.sendRedirect("home.jsp?q=viewStock1#fragment-6");
                         } catch (Exception ex) {
                             out.print(ex);
-                        }
+                        }finally {
+                        	  try{
+                      			cn.close();
+                      		}catch(Exception ex){
+                      			ex.printStackTrace();
+                      		}
+                          }
 
 %>
     </body>

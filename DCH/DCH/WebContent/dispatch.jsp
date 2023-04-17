@@ -282,10 +282,11 @@ remove(se,j);
     </head>
     <body onload="set()" >
 <%
+Connection cn = null;
 try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st=cn.createStatement();
                             ResultSet rs = null;
                             Statement st1=cn.createStatement();
@@ -327,7 +328,13 @@ try {
 <%
 }catch (Exception ex) {
 out.print(ex);
-}
+}finally {
+	  try{
+			cn.close();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+  }
 %>
 <script src="chosen/chosen.jquery.js" type="text/javascript"></script>
 <script type="text/javascript">

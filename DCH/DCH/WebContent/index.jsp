@@ -70,7 +70,7 @@
             <tr><td id="un" >Username</td><td><input  type="text" value="admin" name="username" onfocus="document.getElementById('login').style.background='#3882C7';document.getElementById('un').style.col='#fafafa'" ></td></tr>
             <tr><td><div id="un">Password</div></td><td><input type="password" onfocus="document.getElementById('login').style.background='#3882C7';document.getElementById('un').style.col='#fafafa'"  id="pass" name="password"></td></tr>
             <tr><td colspan="2" align="right" ><input type="submit" id="but" value="Login"> </td> </tr>
-            <tr><td colspan="2" align="right">Version 1.4.2<br>Date 1-May-17<br/>Prev Deploy Date 25-Oct-16</td></tr>
+            <tr><td colspan="2" align="right">Version 1.4.3<br>Release 17 Apr 2023</td></tr>
 
         </table>
             </form></td>

@@ -19,10 +19,11 @@
         <%
         String combo=request.getParameter("combo");
         out.print("<div width=100% style='background-color:#cccfff;'> Results for "+combo+"</div>");
+        Connection cn = null;
         try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st= cn.createStatement();
                             ResultSet rs=st.executeQuery("Select * from stockwithid where product like '%"+combo+"%' or rulling like '%"+combo+"%' or concat(product,' ',rulling) like '%"+combo+"%'");
         %>
@@ -42,7 +43,13 @@
                             }
         }catch(Exception ex){
         out.print(ex);
-        }
+        }finally {
+        	  try{
+      			cn.close();
+      		}catch(Exception ex){
+      			ex.printStackTrace();
+      		}
+          }
         %>
         </select>
         

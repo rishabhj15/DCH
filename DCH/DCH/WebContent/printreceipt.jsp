@@ -83,10 +83,11 @@ th,td{
 <%
 
             String id=request.getParameter("id");
+			Connection cn = null;
             try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st=cn.createStatement();
                             Statement st1=cn.createStatement();
                             Statement st2=cn.createStatement();
@@ -150,7 +151,7 @@ th,td{
                             
                             out.print("</div><div id=date>Date: "+rs1.getString("dat")+"  |  Receipt No: "+recNo+"</div><div id=date1>"+preDate+preRec+"</div></td><td id=topr><img src='diwakar1.png' alt='' width=225 height=125 ></td></tr>");
                             
-                            out.print("<tr><td colspan='2' ><table width=100% id=sub ><tr id=headr><th>S No</th><th width=40% align=left >Particular</th><th align=right >Bundle</th><th align=right>Size</th><th align=right>Loose</th><th align=right>Total</th></tr>");
+                            out.print("<tr><td colspan='2' ><table width=100% id=sub ><tr id=headr><th>S No</th><th align=left >Particular</th><th align=right >Bundle</th><th align=right>Size</th><th align=right>Loose</th><th align=right>Total</th></tr>");
                             int k=0;
                             int bundlet=0,looset=0,totalt=0;
                             while(rs.next()){k++;
@@ -172,7 +173,7 @@ th,td{
                             out.print("<tr><td colspan=6><hr></td></tr><tr id='row'><td align=left colspan=2>"+k+" <i> Items Total</i></td><td align=right> <i></i> "+bundlet+"</td><td colspan=2  align=right> <i></i>"+looset+"</td><td align=right> <i></i>"+totalt+"</td></tr>");
                             out.print("<tr><td colspan=6><hr></td></tr>"
                                     + "<tr id=row >"
-                                        + "<td id='adv' valign=middle colspan=2><img src='riniadds.png' alt='' width=301 height=25 > </td>"
+                                        + "<td id='adv' valign=middle colspan=2></td>"
                                         + "<td valign=middle colspan=4 align=right>");
                             if(rs1.getInt("noparcel")<=0){
                             out.print("<table><tr><th><i>No. of Parcels:</i></th><td> ............</td></tr>");
@@ -183,10 +184,15 @@ th,td{
                             out.print("<tr><th><i>Local Transport:</i></th><td><u> "+rs1.getString("localtrans")+" <u></td></tr>");
                             }
                             out.print("</table></td></tr></table></td></tr></table>");
-                            cn.close();
 }catch (Exception ex) {
 out.print(ex);
-}
+}finally {
+	  try{
+			cn.close();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+  }
 %>
     </body>
 </html>

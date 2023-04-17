@@ -73,10 +73,12 @@ String name=request.getParameter("name");
 		</tr>
 	</thead>
         <tbody>
-<%try {
+<%
+Connection cn = null;
+try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st=cn.createStatement();
                             Statement st1=cn.createStatement();
                             Statement st2=cn.createStatement();
@@ -119,7 +121,13 @@ String name=request.getParameter("name");
                                     <%
 }catch (Exception ex) {
 out.print(ex);
-}
+}finally {
+	  try{
+			cn.close();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+  }
 %>
 
 

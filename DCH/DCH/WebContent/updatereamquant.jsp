@@ -26,17 +26,17 @@ if(u!=null){
     String psize=request.getParameter("psize");
     String rulling=request.getParameter("rulling");
     if(reamquant!=null&&quality!=null&&psize!=null&&rulling!=null){
+    	Connection cn = null;
     try {
                             java.util.Date d=new java.util.Date();
                             java.sql.Timestamp da=new java.sql.Timestamp(d.getTime());
 
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             PreparedStatement ps=null;
                             Statement st=cn.createStatement();
                             int i=st.executeUpdate("update reamquant set quantity="+reamquant+", updated='"+da+"' where quality='"+quality+"' and psize="+psize+" and rulling="+rulling);
-                            cn.close();
                             if(i==1){
                             response.sendRedirect("home.jsp?q=viewStock1#fragment-3");
                             }else{out.print("Something went wrong. Review required");}
@@ -44,7 +44,13 @@ if(u!=null){
     
 } catch (Exception ex) {
 out.println(ex);
-}
+}finally {
+	  try{
+			cn.close();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+  }
 }
 }else{
 response.sendRedirect("index.jsp");

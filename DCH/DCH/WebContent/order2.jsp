@@ -415,7 +415,7 @@
        
         <%
                         String p = request.getParameter("party");
-
+        Connection cn = null;
 
                         try {
                             Cart_1 temp = (Cart_1) session.getAttribute("ordercart");
@@ -424,14 +424,13 @@
                             }
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c = new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st = cn.createStatement();
                             Statement st1 = cn.createStatement();
                             Statement st2 = cn.createStatement();
                             ResultSet rs = st.executeQuery("select * from party where id=" + p);
                             rs.next();
                             String pname = rs.getString(2) + ", " + rs.getString(3);
-                            //String serv=request.getParameter("serv");
         %>
 
         <table align="center" width="90%" >
@@ -477,7 +476,13 @@
                         <%
                                         } catch (Exception ex) {
                                             out.print(ex);
-                                        }
+                                        }finally {
+                                        	  try{
+                                      			cn.close();
+                                      		}catch(Exception ex){
+                                      			ex.printStackTrace();
+                                      		}
+                                          }
                         %>
                         <tr>
                             <td colspan="2" align="center">

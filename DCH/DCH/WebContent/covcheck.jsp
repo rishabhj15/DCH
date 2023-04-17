@@ -3,10 +3,11 @@
 
         <%
         String q=request.getParameter("q");
+        Connection cn = null;
         try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             
                             
                             Statement st=cn.createStatement();
@@ -18,5 +19,11 @@
                             out.print(rs1.getString(1));
                                                    } catch (Exception ex) {
                             out.println(ex);
-                        }
+                        }finally {
+                        	  try{
+                      			cn.close();
+                      		}catch(Exception ex){
+                      			ex.printStackTrace();
+                      		}
+                          }
         %>

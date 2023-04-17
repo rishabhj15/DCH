@@ -23,10 +23,11 @@ User u=(User)session.getAttribute("user");
 if(u!=null){
     String tab=request.getParameter("tab");
     String id=request.getParameter("id");
+    Connection cn = null;
 try {
 Class.forName("com.mysql.jdbc.Driver").newInstance();
 Conf c=new Conf();
-Connection cn = DriverManager.getConnection(c.getURL());
+cn = DriverManager.getConnection(c.getURL());
 Statement st=cn.createStatement();
 ResultSet rs=st.executeQuery("SELECT COUNT( * ) AS  `Rows` ,  `quality` FROM  `reel` where status='raw' GROUP BY  `quality` ORDER BY  `quality` ");
 %>
@@ -62,7 +63,13 @@ out.print("<tr><td>"+rs.getString(3)+"</td><td>"+rs.getString(2)+"</td></tr>");
 <%
 } catch (Exception ex) {
 out.println(ex);
-}
+}finally {
+	  try{
+			cn.close();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+  }
 }else{%>
 You are not authorized. Please Login.
         <%}%>

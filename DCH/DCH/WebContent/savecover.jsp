@@ -19,10 +19,11 @@
 String covtype=request.getParameter("covtype");
 String quantity=request.getParameter("quantity");
 int q=Integer.parseInt(quantity);
+Connection cn = null;
 try {
                             Class.forName("com.mysql.jdbc.Driver").newInstance();
                             Conf c=new Conf();
-                            Connection cn = DriverManager.getConnection(c.getURL());
+                            cn = DriverManager.getConnection(c.getURL());
                             Statement st=cn.createStatement();
                             ResultSet rs = st.executeQuery("Select quantity from covtype where id="+covtype);
                             rs.next();
@@ -39,10 +40,15 @@ try {
                             
                             
                             response.sendRedirect("home.jsp?q=addStock#fragment-2");
-                                cn.close();
                         } catch (Exception ex) {
                             out.println(ex);
-                        }
+                        }finally {
+                        	  try{
+                      			cn.close();
+                      		}catch(Exception ex){
+                      			ex.printStackTrace();
+                      		}
+                          }
 %>
     </body>
 </html>
