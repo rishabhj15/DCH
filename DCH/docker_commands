@@ -1,2 +1,0 @@
-docker run --name dch-mariadb -e MARIADB_ROOT_PASSWORD=mypass123 -p 3306:3306 -d mariadb:10.6.4
-docker run --name dch-phpmyadmin -d --link my-own-mariadb:db -p 8081:80 --env "UPLOAD_LIMIT=256M" phpmyadmin/phpmyadmin
