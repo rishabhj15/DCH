@@ -14,9 +14,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Conf{
-    //public String con="jdbc:mysql://localhost/ibra19_dch1?useUnicode=true&characterEncoding=UTF-8&user=piyush&password=shrimal123";
     public String con="jdbc:mysql://localhost:3306/ibra19_dch1?useUnicode=true&characterEncoding=UTF-8&user=root&password=root";
-	
 
     public String getURL() throws IOException{
 return con;
